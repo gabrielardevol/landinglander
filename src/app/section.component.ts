@@ -145,49 +145,49 @@ import {SectionEditableComponent} from './sectioneditable.component';
 
                   </div>
               </ng-template>
-              <div class="button-pannel absolute flex flex-col top-0 left-0 gap-3 p-3 items-start">
-                  <div class="flex gap-3">
+              <div class="button-pannel absolute flex flex-col top-0 left-0 gap-1 p-3 items-start">
+                  <div class="flex gap-1">
                       <!--            <button mat-mini-fab (click)="hidePart(0)">-->
                       <!--              <i class="bi bi-layout-split"></i>-->
                       <!--            </button>-->
-                      <button mat-mini-fab (click)="editText[i] = !editText[i]">
+                      <button (click)="editText[i] = !editText[i]">
                           <i class="bi bi-type"></i>
                       </button>
-                      <button mat-mini-fab (click)="addHeader(i)">
+                      <button (click)="addHeader(i)">
                           <i class="bi bi-type-h1"></i>
                       </button>
-                      <button mat-mini-fab (click)="openModal(image)">
+                      <button (click)="openModal(image)">
                           <i class="bi bi-image"></i>
                       </button>
 
-                      <button mat-mini-fab (click)="deleteItem(i)">
+                      <button (click)="deleteItem(i)">
                           <i class="bi bi-trash-fill"></i>
                       </button>
                   </div>
 
-                  <div class="flex gap-3">
-                      <button mat-mini-fab (click)="positionImage(i, 'bottom')">
+                  <div class="flex gap-1">
+                      <button (click)="positionImage(i, 'bottom')">
                           <i class="bi bi-align-bottom"></i>
                       </button>
-                      <button mat-mini-fab (click)="positionImage(i, 'left')">
+                      <button (click)="positionImage(i, 'left')">
                           <i class="bi bi-align-start"></i>
                       </button>
-                      <button mat-mini-fab (click)="positionImage(i, 'right')">
+                      <button (click)="positionImage(i, 'right')">
                           <i class="bi bi-align-end"></i>
                       </button>
-                      <button mat-mini-fab (click)="positionImage(i, 'top')">
+                      <button (click)="positionImage(i, 'top')">
                           <i class="bi bi-align-top"></i>
                       </button>
                   </div>
 
-                  <div class="flex gap-3">
-                      <button mat-mini-fab>
+                  <div class="flex gap-1">
+                      <button>
                           <i class="bi bi-text-center"></i>
                       </button>
-                      <button mat-mini-fab>
+                      <button>
                           <i class="bi bi-text-left"></i>
                       </button>
-                      <button mat-mini-fab>
+                      <button>
                           <i class="bi bi-text-right"></i>
                       </button>
                   </div>
@@ -200,7 +200,7 @@ import {SectionEditableComponent} from './sectioneditable.component';
                   <!--                <h1 *ngIf="index === 0 && section[0]?.header" contenteditable="true">{{section[0]?.header}}</h1>-->
                   <!--                <h1 *ngIf="index === 1 && section[1]?.header" contenteditable="true">{{section[1]?.header}}</h1>-->
 
-                  <p class="hidden">{{sections ? [i]['text']}}</p>
+                  <p class="hidden">{{sections ? [i]['text'] : ''}}</p>
                   <p class="" contenteditable="true">hjjygvjh</p>
                   <app-section-editable></app-section-editable>
 

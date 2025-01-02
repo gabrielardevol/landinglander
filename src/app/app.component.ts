@@ -1,19 +1,9 @@
-import {
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges,
-  ViewChild
-} from '@angular/core';
+import {Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
 import {NgClass, NgFor, NgForOf} from '@angular/common';
 import {MatButton, MatMiniFabButton} from '@angular/material/button';
 import {MatDialog} from '@angular/material/dialog';
-import {CodeSnippetEvent, Section} from './snippet.interface';
+import {BackgroundPosition, Section} from './snippet.interface';
 import {CdkCopyToClipboard} from '@angular/cdk/clipboard';
 import {MatDivider} from '@angular/material/divider';
 import {MatTooltip} from '@angular/material/tooltip';
@@ -56,19 +46,29 @@ import {SectionEditableComponent} from './sectioneditable.component';
         color: black;
       }
 
+      .example-box {
+        transition: box-shadow 200ms cubic-bezier(0, 0, 0.2, 1);
+        box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0),
+        0 2px 2px 0 rgba(0, 0, 0, 0.14),
+        0 1px 5px 0 rgba(0, 0, 0, 0.12);
+      }
+
+      .example-box:active {
+        box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+        0 8px 10px 1px rgba(0, 0, 0, 0.14),
+        0 3px 14px 2px rgba(0, 0, 0, 0.12);
+      }
+
     `
   ],
   template: `
-      <nav class="h-10 bg-gray-200 font-mono p-2">
-          landing lander - gabriel ardèvol - artsdevol&#64;gmail.com - <a class="text-indigo-700"
-                                                                          href="https://www.linkedin.com/in/gabrielardevol/">linkedin</a>
-      </nav>
-      <div class="flex box-border bg-gray-200" style="height: calc(100vh - 40px)">
-          <div id="sidebar" class="bg-gray-200 flex flex-col items-center gap-4 px-4">
-              <button (click)="addSection(); onSectionChange()" mat-mini-fab>
+      <div class="flex box-border bg-gray-700 p-3 gap-2 h-[100vh]">
+ 
+          <div id="sidebar" class="button-pannel flex flex-col items-center gap-2">
+              <button (click)="addSection(); onSectionChange()">
                   <i class="bi bi-plus-lg"></i>
               </button>
-              <button #colorButton mat-mini-fab class="relative !text-[{{color.textColor}}] !bg-[{{color.color}}]">
+              <button #colorButton class="relative !text-[{{color.textColor}}] !bg-[{{color.color}}]">
                   <i class="bi bi-palette-fill"></i>
                   <input type="color" class="absolute top-[-8px] right-[-12px] w-10 h-10 opacity-0" id="body"
                          name="body"
@@ -84,19 +84,19 @@ import {SectionEditableComponent} from './sectioneditable.component';
               <!--        </button>-->
               <mat-divider class="w-full" [vertical]="false"/>
 
-              <button [disabled]="historicSteps >= (historic.length - 1)" (click)="undo()" mat-mini-fab>
+              <button [disabled]="historicSteps >= (historic.length - 1)" (click)="undo()">
                   <i class="bi bi-arrow-90deg-left"></i>
               </button>
-              <button [disabled]="historicSteps == 0" (click)="redo()" mat-mini-fab>
+              <button [disabled]="historicSteps == 0" (click)="redo()">
                   <i class="bi bi-arrow-90deg-right"></i>
               </button>
 
               <mat-divider class="w-full" [vertical]="false"/>
-              <button (click)="openSnippet(template)" mat-mini-fab>
+              <button (click)="openSnippet(template)">
                   <i class="bi bi-code-slash"></i>
               </button>
           </div>
-          <div class="flex-1 mr-4 mb-4 overflow-auto rounded-xl shadow-inner">
+          <div class="flex-1 overflow-auto rounded-xl shadow-inner">
               <ng-template #template>
                   <div class="h-[50vh] flex flex-col overflow-hidden">
                       <div class="flex-1 overflow-y-auto overflow-x-hidden p-3">
@@ -113,9 +113,9 @@ import {SectionEditableComponent} from './sectioneditable.component';
               </ng-template>
 
               <div class="overflow-hidden bg-gray-200">
-                  <div class="flex flex-col overflow-visible bg-white min-h-[calc(100vh-56px)]" cdkDropList
+                  <div class="flex flex-col overflow-visible bg-white min-h-[calc(100vh-24px)]" cdkDropList
                        (cdkDropListDropped)="drop($event)">
-                      <app-section-editable cdkDrag *ngFor="let section of sections, let i = index" [section]="section"
+                      <app-section-editable class="example-box" cdkDrag *ngFor="let section of sections, let i = index" [section]="section"
                                             [color]="color"
                                             [ngClass]="section[0] !== undefined ? 'flex-1 flex' : ''"
                                             (onSectionChange)="onSectionChange()"/>
@@ -129,7 +129,7 @@ import {SectionEditableComponent} from './sectioneditable.component';
 export class AppComponent implements OnInit, OnChanges {
   codeSnippet: string = "";
   sectionCodeSnippet: string[] = [];
-  color: { color: string, textColor: string } = {color: '#474747', textColor: '#ffffff'};
+  color: { color: string, textColor: string } = {color: '#CA2D1C', textColor: '#ffffff'};
   @ViewChild('colorInput') colorInput!: ElementRef;
   @ViewChild('colorButton') colorButton!: MatMiniFabButton;
   historic: Section[][][] = [];
@@ -137,10 +137,40 @@ export class AppComponent implements OnInit, OnChanges {
     [
       [
         {
-          text: "Add sections and customize its appearance using the menus. Copy the code and use it on your website.",
+          text: "Add sections and customize its appearance using the menu options. Copy the code and use it on your website.",
           image: "",
           header: "Welcome to landing lander!",
           bright: true
+        },
+      ],
+      [
+        {
+          text: "Use the color options to customize your landing",
+          image: "https://img.freepik.com/premium-photo/yellow-rubber-duck-floating-pool_673414-87.jpg?w=1800",
+          bright: false,
+          backgroundPosition: BackgroundPosition.CENTER,
+        },
+        {
+          text: "Combine with light and dark mode. Add your images and apply color as filter.",
+          image: "https://img.freepik.com/premium-photo/yellow-rubber-duck-floating-pool_673414-87.jpg?w=1800",
+          bright: true,
+          backgroundPosition: BackgroundPosition.CENTER,
+        },
+      ],
+      [
+        {
+          text: "Use the color options to customize your landing",
+          image: "https://img.freepik.com/premium-photo/yellow-rubber-duck-floating-pool_673414-87.jpg?w=1800",
+          bright: false,
+          backgroundPosition: BackgroundPosition.CENTER,
+          colored: {textColor: "#000000", color: "#000000"}
+        },
+        {
+          text: "Combine with light and dark mode. Add your images and apply color as filter.",
+          image: "https://img.freepik.com/premium-photo/yellow-rubber-duck-floating-pool_673414-87.jpg?w=1800",
+          bright: true,
+          backgroundPosition: BackgroundPosition.CENTER,
+          colored: {textColor: "#000000", color: "#000000"}
         },
       ]
     ]

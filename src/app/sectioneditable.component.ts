@@ -66,6 +66,10 @@ import {MatTooltip} from '@angular/material/tooltip';
       #text-buttons:hover .hidden {
         display: block;
       }
+      
+      .section:active {
+        @apply shadow;
+      }
 
       /*.colored-bg {*/
       /*  filter: saturate(0) contrast(1.8) brightness(3.5);*/
@@ -76,7 +80,7 @@ import {MatTooltip} from '@angular/material/tooltip';
   template: `
       <div id="section" class="relative flex flex-1 flex-col sm:flex-row section">
           <button #cdkDragButton
-                  class="cdkDragHandle m-auto hidden w-full top-[-10px] justify-center absolute h-min z-20 ">
+                  class="border-none cdkDragHandle m-auto hidden w-full top-[-10px] justify-center absolute h-min z-20 ">
               <i cdkDragHandle class="bi bi-grip-horizontal text-4xl text-stone-400 m-[-1px] "></i>
               <i cdkDragHandle class="bi bi-grip-horizontal text-4xl text-stone-400 m-[-1px]"></i>
               <i cdkDragHandle class="bi bi-grip-horizontal text-4xl text-stone-400 m-[-1px]"></i>
@@ -101,7 +105,8 @@ import {MatTooltip} from '@angular/material/tooltip';
 
                       </mat-form-field>
 
-                      <button mat-flat-button (click)="setImage(i); onSectionChange.emit()" mat-dialog-close>Set image</button>
+                      <button mat-flat-button (click)="setImage(i); onSectionChange.emit()" mat-dialog-close>Set image
+                      </button>
                       <button *ngIf="part.image" mat-button [cdkCopyToClipboard]="part.image"
                               mat-dialog-close>
                           Copy to clipboard
@@ -120,7 +125,7 @@ import {MatTooltip} from '@angular/material/tooltip';
 
                   <h1 *ngIf="section[i].header" class="w-full text-xl" spellcheck="false"
                       contenteditable="true"
-                      (input)="onTextChange($event.target, i, 'headers')">{{part.header}}</h1>
+                      (input)="onTextChange($event.target, i, 'header')">{{part.header}}</h1>
 
                   <p *ngIf="section[i].text" class="w-full " spellcheck="false" contenteditable="true"
                      (input)="onTextChange($event.target, i, 'text')">{{part.text}}</p>
@@ -141,35 +146,35 @@ import {MatTooltip} from '@angular/material/tooltip';
                   <div class="flex flex-col gap-3">
 
                       <div id="text-buttons" class="flex gap-3" [ngClass]="part.text ? 'selected' : ''">
-                          <button mat-mini-fab (click)="addText(i); onSectionChange.emit()"
+                          <button (click)="addText(i); onSectionChange.emit()"
                                   [ngClass]="part.text ? 'selected' : ''">
                               <i class="bi bi-type"></i>
                           </button>
-                          <button mat-mini-fab (click)="addHeader(i); onSectionChange.emit()"
+                          <button (click)="addHeader(i); onSectionChange.emit()"
                                   [ngClass]="part.header ? 'selected' : ''" class="hidden">
                               <i class="bi bi-type-h1"></i>
                           </button>
-                          <button mat-mini-fab class="hidden" (click)="(part.textAlign = 'center'); onSectionChange.emit()"
+                          <button class="hidden" (click)="(part.textAlign = 'center'); onSectionChange.emit()"
                                   [ngClass]="part.textAlign == 'center' || !part.textAlign ? 'selected' : ''">
                               <i class="bi bi-text-center"></i>
                           </button>
-                          <button mat-mini-fab class="hidden" (click)="(part.textAlign = 'left'); onSectionChange.emit()"
+                          <button class="hidden" (click)="(part.textAlign = 'left'); onSectionChange.emit()"
                                   [ngClass]="part.textAlign == 'left' ? 'selected' : ''">
                               <i class="bi bi-text-left"></i>
                           </button>
-                          <button mat-mini-fab class="hidden" (click)="(part.textAlign = 'right'); onSectionChange.emit()"
+                          <button class="hidden" (click)="(part.textAlign = 'right'); onSectionChange.emit()"
                                   [ngClass]="part.textAlign == 'right' ? 'selected' : ''">
                               <i class="bi bi-text-right"></i>
                           </button>
                       </div>
                       <div id="image-buttons" class="flex gap-3" [ngClass]="part.image ? 'selected' : ''">
-                          <button mat-mini-fab (click)="openModal(imagePopup)"
+                          <button (click)="openModal(imagePopup)"
                                   [ngClass]="part.image ? 'selected' : ''">
                               <i class="bi bi-image"></i>
                           </button>
                           <button
                                   *ngFor="let position of [BackgroundPosition.BOTTOM, BackgroundPosition.RIGHT, BackgroundPosition.LEFT, BackgroundPosition.TOP]"
-                                  mat-mini-fab class="hidden" (click)="part.backgroundPosition = position"
+                                  class="hidden" (click)="part.backgroundPosition = position"
                                   [ngClass]="part.backgroundPosition === position ? 'selected' : ''">
                               <i *ngIf="position == BackgroundPosition.BOTTOM || position == BackgroundPosition.TOP"
                                  class="bi bi-align-{{position}}"></i>
@@ -178,26 +183,31 @@ import {MatTooltip} from '@angular/material/tooltip';
 
                           </button>
 
-                          <!--              <button mat-mini-fab class="hidden" (click)="part.grayScale ? part.grayScale = false : part.grayScale = true">-->
+                          <!--              <button class="hidden" (click)="part.grayScale ? part.grayScale = false : part.grayScale = true">-->
                           <!--                <i class="bi bi-circle-half"></i>-->
                           <!--              </button>-->
                       </div>
 
-                      <button *ngIf="section.length == 1" [disabled]="section[1]" mat-mini-fab (click)="addItem(i); onSectionChange.emit()">
+                      <button *ngIf="section.length == 1" [disabled]="section[1]"
+                              (click)="addItem(i); onSectionChange.emit()">
                           <i class="bi bi-layout-split"></i>
                       </button>
-                      <button mat-mini-fab (click)="deleteItem(i); onSectionChange.emit()">
+
+
+                      <button (click)="applyColor(i); onSectionChange.emit()"
+                              [ngClass]="part.colored ? 'selected' : ''">
+                          <i class="bi bi-palette-fill"></i>
+                      </button>
+                      <button (click)="part.bright ? part.bright = !part.bright : part.bright = true; onSectionChange.emit()">
+                          <i *ngIf="!part.bright" class="bi bi-brightness-high-fill"></i>
+                          <i *ngIf="part.bright" class="bi bi-moon-fill"></i>
+                      </button>
+
+                      <button (click)="deleteItem(i); onSectionChange.emit()">
                           <i class="bi bi-trash-fill"></i>
                       </button>
                   </div>
 
-                  <button mat-mini-fab (click)="applyColor(i); onSectionChange.emit()" [ngClass]="part.colored ? 'selected' : ''">
-                      <i class="bi bi-palette-fill"></i>
-                  </button>
-                  <button mat-mini-fab (click)="part.bright ? part.bright = !part.bright : part.bright = true; onSectionChange.emit()">
-                      <i *ngIf="!part.bright" class="bi bi-brightness-high-fill"></i>
-                      <i *ngIf="part.bright" class="bi bi-moon-fill"></i>
-                  </button>
               </div>
           </div>
       </div>
@@ -215,7 +225,7 @@ export class SectionEditableComponent implements OnInit, OnChanges {
   MAX_WIDTH: number = 1200;
   @Input() color: { color: string, textColor: string } = {color: "", textColor: ""};
   text: (string | undefined)[] = [];
-  headers: (string | undefined)[] = [];
+  header: (string | undefined)[] = [];
   @ViewChild('imageInput') imageInput!: ElementRef;
   @Output() onSectionChange  = new EventEmitter<void>();
   emptySection: Section = {
@@ -262,9 +272,12 @@ export class SectionEditableComponent implements OnInit, OnChanges {
     if (this.imageInput) this.section[i].image = this.imageInput.nativeElement.value;
   }
 
-  onTextChange(innerHTML: any, i: number, type: 'text' | 'headers') {
+  onTextChange(innerHTML: any, i: number, type: 'text' | 'header') {
     if (i === 0) this[type][0] = innerHTML.innerText;
     if (i === 1) this[type][1] = innerHTML.innerText;
+    this.section[i][type] = innerHTML.innerText;
+    console.log(this.section[i][type])
+
   }
 
   addText(i: number) {
