@@ -76,18 +76,18 @@ import {SectionEditableComponent} from './sectioneditable.component';
                          (ngModelChange)="onColorChange(); onSectionChange()"/>
               </button>
 
-              <!--        <button mat-mini-fab [matTooltip]="'Download json'">-->
-              <!--          <i class="bi bi-download"></i>-->
-              <!--        </button>-->
-              <!--        <button mat-mini-fab [matTooltip]="'Upload json'">-->
-              <!--          <i class="bi bi-upload"></i>-->
-              <!--        </button>-->
-              <mat-divider class="w-full" [vertical]="false"/>
+            <mat-divider class="w-full" [vertical]="false"/>
 
-              <button [disabled]="historicSteps >= (historic.length - 1)" (click)="undo()">
-                  <i class="bi bi-arrow-90deg-left"></i>
-              </button>
-              <button [disabled]="historicSteps == 0" (click)="redo()">
+            <!--        <button mat-mini-fab [matTooltip]="'Download json'">-->
+            <!--          <i class="bi bi-download"></i>-->
+            <!--        </button>-->
+            <!--        <button mat-mini-fab [matTooltip]="'Upload json'">-->
+            <!--          <i class="bi bi-upload"></i>-->
+            <!--        </button>-->
+            <button [disabled]="historicSteps >= (historic.length - 1)" (click)="undo()">
+              <i class="bi bi-arrow-90deg-left"></i>
+            </button>
+            <button [disabled]="historicSteps == 0" (click)="redo()">
                   <i class="bi bi-arrow-90deg-right"></i>
               </button>
 
